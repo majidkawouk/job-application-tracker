@@ -25,6 +25,21 @@ app.get('/', (req, res) => {
     res.send(results[3]); // send 4th user (if exists)
   });
 });
+// Route to register user
+app.post('/register', (req, res) => {
+  const { email, password, full_name } = req.body;
+  con.query(
+    "INSERT INTO users (email, password, full_name) VALUES (?, ?, ?)",
+    [email, password, full_name],
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send('Database error');
+      }
+      res.status(200).send('User added successfully');
+    }
+  );  
+});
 
 // Start server
 app.listen(port, () => {
