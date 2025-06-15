@@ -5,7 +5,7 @@ const port = 3001;
 
 app.use(express.json());
 
-// Create connection pool
+
 const con = mysql.createPool({
   host: "localhost",
   user: "root",   
@@ -46,7 +46,6 @@ app.post("/login", (req, res) => {
   if (!full_name || !password) {
     return res.status(400).json({ message: "Missing full_name or password" });
   }
-
   con.query(
     "SELECT * FROM users WHERE full_name = ? AND password = ?",
     [full_name, password],
@@ -59,12 +58,19 @@ app.post("/login", (req, res) => {
         return res.status(401).json({ message: "Invalid username or password" });
       }
 
-      return res.status(200).json({ message: "Login successful" });
+      return res.status(200).json({
+  message: "Login successful",
+  user: {
+    id: result[0].id,
+    full_name: result[0].full_name,
+    email: result[0].email
+  }
+});
     }
   );
 });
 
-// Start server
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
