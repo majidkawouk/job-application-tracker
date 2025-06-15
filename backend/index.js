@@ -14,15 +14,14 @@ const con = mysql.createPool({
   port: 3306          
 });
 
-// Route to get users
 app.get('/', (req, res) => {
   con.query("SELECT * FROM users", (err, results) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Database error');
     }
-    // results is an array of users
-    res.send(results[3]); // send 4th user (if exists)
+
+    res.send(results[3]);
   });
 });
 // Route to register user
@@ -39,6 +38,30 @@ app.post('/register', (req, res) => {
       res.status(200).send('User added successfully');
     }
   );  
+});
+// route to user login
+app.post("/login", (req, res) => {
+  const { full_name, password } = req.body;
+
+  if (!full_name || !password) {
+    return res.status(400).json({ message: "Missing full_name or password" });
+  }
+
+  con.query(
+    "SELECT * FROM users WHERE full_name = ? AND password = ?",
+    [full_name, password],
+    (err, result) => {
+      if (err) {
+        return res.status(500).json({ err: "Database error" });
+      }
+
+      if (result.length === 0) {
+        return res.status(401).json({ message: "Invalid username or password" });
+      }
+
+      return res.status(200).json({ message: "Login successful" });
+    }
+  );
 });
 
 // Start server
