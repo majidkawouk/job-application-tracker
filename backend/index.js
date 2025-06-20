@@ -102,6 +102,35 @@ app.post("/dashboard", (req, res) => {
   );
 });
 
+
+//delete applacation
+app.delete("/dashboard/remove", (req, res) => {
+  const { application_id } = req.body;
+
+  if (!application_id) {
+    return res.status(400).json({ err: "Missing application_id in request body" });
+  }
+
+  con.query(
+    `delete From  applications
+     WHERE application_id = ?`,
+    [application_id],
+    (err, result) => {
+      if (err) {
+        console.error("SQL Error:", err);
+        return res.status(500).json({ err: "Database error" });
+      }
+
+      if(result.affectedRows == 0){
+        return res.status(401).json({message:" application_id not found"})
+      }
+
+
+      return res.json({message:"Deleted successfuly"});
+    }
+  );
+});
+
 //port
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
