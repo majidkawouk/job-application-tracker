@@ -13,16 +13,7 @@ const con = mysql.createPool({
   port: 3306,
 });
 
-app.get("/", (req, res) => {
-  con.query("SELECT * FROM users", (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("Database error");
-    }
 
-    res.send(results[3]);
-  });
-});
 // Route to register user
 app.post("/register", (req, res) => {
   const { email, password, full_name } = req.body;
@@ -101,6 +92,25 @@ app.post("/dashboard", (req, res) => {
     }
   );
 });
+//add aplication
+app.post("/dashboard/add_application", (req, res) => {
+  const {company_id,job_title,job_location,job_url,status,application_date,response_date,salary_expectation}= req.body;
+  if(!company_id  || !job_title || !job_location || !job_url || !status || !application_date || !response_date || !salary_expectation) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+  con.query(
+    `INSERT INTO applications(company_id,job_title,job_location,job_url,status,application_date,response_date,salary_expectation)
+    VALUES(?,?,?,?,?,?,?,?)`,
+    [company_id,job_title,job_location,job_url,status,application_date,response_date,salary_expectation],
+    (err, result) => {
+      if (err) {
+        console.log("error:", err);
+        return res.status(500).json({ err: "database error" });
+      }
+      return res.status(201).json({ message: "Application added successfully" });
+    }
+  );
+});
 
 //delete applacation
 app.delete("/dashboard/delete_application", (req, res) => {
@@ -130,9 +140,9 @@ app.delete("/dashboard/delete_application", (req, res) => {
     }
   );
 });
-//update application
+//update application state
 app.patch("/dashboard/update", (req, res) => {
-  const { application_id } = req.body;
+  const { application_id ,status} = req.body;
 
   if (!application_id) {
     return res
@@ -142,8 +152,9 @@ app.patch("/dashboard/update", (req, res) => {
 
   con.query(
     `UPDATE applications set 
+      status =  ?
      WHERE application_id = ?`,
-    [application_id],
+    [status,application_id],
     (err, result) => {
       if (err) {
         console.error("SQL Error:", err);
@@ -151,10 +162,10 @@ app.patch("/dashboard/update", (req, res) => {
       }
 
       if (result.affectedRows == 0) {
-        return res.status(401).json({ message: " application_id not found" });
+        return res.status(401).json({ message: "application_id not found" });
       }
 
-      return res.json({ message: "Deleted successfuly" });
+      return res.json({ message: "Updated successfuly" });
     }
   );
 });
@@ -206,8 +217,7 @@ app.delete("/dashboard/delete_company", (req, res) => {
   );
 });
 
-//add aplication
-app.post("/dashboard/add_application", (req, res) => {});
+
 
 //port
 app.listen(port, () => {
