@@ -103,7 +103,7 @@ app.post("/dashboard", (req, res) => {
 });
 
 //delete applacation
-app.delete("/dashboard/remove", (req, res) => {
+app.delete("/dashboard/delete_application", (req, res) => {
   const { application_id } = req.body;
 
   if (!application_id) {
@@ -177,6 +177,35 @@ app.post("/dashboard/add_company", (req, res) => {
     }
   );
 });
+//delete company 
+app.delete("/dashboard/delete_company", (req, res) => {
+  const { name } = req.body;
+
+  if (!name) {
+    return res
+      .status(400)
+      .json({ err: "Missing company name in request body" });
+  }
+
+  con.query(
+    `delete From companies
+     WHERE name = ?`,
+    [name],
+    (err, result) => {
+      if (err) {
+        console.error("SQL Error:", err);
+        return res.status(500).json({ err: "Database error" });
+      }
+
+      if (result.affectedRows == 0) {
+        return res.status(401).json({ message: "name not found" });
+      }
+
+      return res.json({ message: "Deleted successfuly" });
+    }
+  );
+});
+
 //add aplication
 app.post("/dashboard/add_application", (req, res) => {});
 
