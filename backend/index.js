@@ -102,13 +102,14 @@ app.post("/dashboard", (req, res) => {
   );
 });
 
-
 //delete applacation
 app.delete("/dashboard/remove", (req, res) => {
   const { application_id } = req.body;
 
   if (!application_id) {
-    return res.status(400).json({ err: "Missing application_id in request body" });
+    return res
+      .status(400)
+      .json({ err: "Missing application_id in request body" });
   }
 
   con.query(
@@ -121,12 +122,11 @@ app.delete("/dashboard/remove", (req, res) => {
         return res.status(500).json({ err: "Database error" });
       }
 
-      if(result.affectedRows == 0){
-        return res.status(401).json({message:" application_id not found"})
+      if (result.affectedRows == 0) {
+        return res.status(401).json({ message: " application_id not found" });
       }
 
-
-      return res.json({message:"Deleted successfuly"});
+      return res.json({ message: "Deleted successfuly" });
     }
   );
 });
@@ -135,7 +135,9 @@ app.patch("/dashboard/update", (req, res) => {
   const { application_id } = req.body;
 
   if (!application_id) {
-    return res.status(400).json({ err: "Missing application_id in request body" });
+    return res
+      .status(400)
+      .json({ err: "Missing application_id in request body" });
   }
 
   con.query(
@@ -148,25 +150,35 @@ app.patch("/dashboard/update", (req, res) => {
         return res.status(500).json({ err: "Database error" });
       }
 
-      if(result.affectedRows == 0){
-        return res.status(401).json({message:" application_id not found"})
+      if (result.affectedRows == 0) {
+        return res.status(401).json({ message: " application_id not found" });
       }
 
-
-      return res.json({message:"Deleted successfuly"});
+      return res.json({ message: "Deleted successfuly" });
     }
   );
 });
 //add company
-app.post("/dashboard/add_company",(req,res)=>{
-  const {name,website,headquarters_location} = req.body;
-  con.query()
-})
+app.post("/dashboard/add_company", (req, res) => {
+  const { name, website, headquarters_location } = req.body;
+  if (!name || !website || !headquarters_location) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+  con.query(
+    `INSERT INTO companies(name,website,headquarters_location)
+    VALUES(?,?,?)`,
+    [name, website, headquarters_location],
+    (err, result) => {
+      if (err) {
+        console.log("error:", err);
+        return res.status(500).json({ err: "database error" });
+      }
+      return res.status(201).json({ message: "Company added successfully" });
+    }
+  );
+});
 //add aplication
-app.post("/dashboard/add_application",(req,res)=>{
-  const {}
-})
-
+app.post("/dashboard/add_application", (req, res) => {});
 
 //port
 app.listen(port, () => {
