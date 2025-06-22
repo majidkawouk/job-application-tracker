@@ -130,7 +130,7 @@ app.delete("/dashboard/remove", (req, res) => {
     }
   );
 });
-//update
+//update application
 app.patch("/dashboard/update", (req, res) => {
   const { application_id } = req.body;
 
@@ -157,6 +157,16 @@ app.patch("/dashboard/update", (req, res) => {
     }
   );
 });
+//add company
+app.post("/dashboard/add_company",(req,res)=>{
+  const {name,website,headquarters_location} = req.body;
+  con.query()
+})
+//add aplication
+app.post("/dashboard/add_application",(req,res)=>{
+  const {}
+})
+
 
 //port
 app.listen(port, () => {
