@@ -1,12 +1,15 @@
 "use client";
+
 import { useState } from "react";
-import { useUser } from "./UserContext";
+import { useUser } from "@/components/UserContext";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
-  const { user, setUser } = useUser();
+  const { setUser, user } = useUser();
   const [full_name, setFullName] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const router = useRouter();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -20,9 +23,9 @@ export default function Login() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Login successful:", data);
         setMessage("✅ Login successful");
-        setUser(data.user); // <-- set full user object here
+        setUser(data.user);
+        router.push("/dashboard");
       } else {
         const errData = await response.json();
         console.error("Login failed:", errData);
@@ -35,7 +38,7 @@ export default function Login() {
   };
 
   return (
-    <div className="w-full min-h-[calc(100vh-80px)] bg-gradient-to-br from-[#FF6A00] to-[#FFB347] flex justify-center items-center px-4 py-10">
+    <div className="w-full min-h-screen bg-gradient-to-br from-[#FF6A00] to-[#FFB347] flex justify-center items-center px-4 py-10">
       <form
         className="w-full max-w-md bg-white/10 p-6 sm:p-8 rounded-xl shadow-lg flex flex-col gap-5 items-center"
         onSubmit={handleLogin}
@@ -43,13 +46,8 @@ export default function Login() {
         <img src="/user.png" alt="user" className="w-20 h-20" />
         <h1 className="text-3xl font-bold text-white">Login</h1>
 
-        {/* Username input */}
         <div className="relative w-full">
-          <img
-            src="/user1.png"
-            alt="icon"
-            className="absolute left-3 top-3 w-5 h-5"
-          />
+          <img src="/user1.png" alt="icon" className="absolute left-3 top-3 w-5 h-5" />
           <input
             value={full_name}
             onChange={(e) => setFullName(e.target.value)}
@@ -59,13 +57,8 @@ export default function Login() {
           />
         </div>
 
-        {/* Password input */}
         <div className="relative w-full">
-          <img
-            src="/lock.png"
-            alt="icon"
-            className="absolute left-3 top-3 w-5 h-5"
-          />
+          <img src="/lock.png" alt="icon" className="absolute left-3 top-3 w-5 h-5" />
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -75,7 +68,6 @@ export default function Login() {
           />
         </div>
 
-        {/* Login button */}
         <button
           type="submit"
           className="bg-black text-white w-full py-3 rounded-lg font-bold hover:bg-gray-800 transition"
@@ -83,11 +75,8 @@ export default function Login() {
           Login
         </button>
 
-        <a href="http://localhost:3000/register" className="text-white underline">
-          Create new account
-        </a>
+        <a href="/register" className="text-white underline">Create new account</a>
 
-        {/* Message */}
         <p className="text-white font-semibold mt-4">
           {message}
           {user && ` — Welcome, ${user.full_name}`}
