@@ -28,11 +28,6 @@ export default function Register() {
       if (response.ok) {
         console.log("User registered successfully");
         setMessage("✅ User registered successfully");
-        // Optionally clear the form:
-        setFullName("");
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
       } else {
         const errorText = await response.text();
         setMessage("❌ Registration failed: " + errorText);

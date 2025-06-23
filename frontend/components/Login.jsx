@@ -1,8 +1,9 @@
 "use client";
-
 import { useState } from "react";
+import { useUser } from "./UserContext";
 
 export default function Login() {
+  const { user, setUser } = useUser();
   const [full_name, setFullName] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -12,18 +13,16 @@ export default function Login() {
 
     try {
       const response = await fetch("http://localhost:3001/login", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({ full_name, password }),
-});
-
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ full_name, password }),
+      });
 
       if (response.ok) {
         const data = await response.json();
         console.log("Login successful:", data);
         setMessage("✅ Login successful");
+        setUser(data.user); // <-- set full user object here
       } else {
         const errData = await response.json();
         console.error("Login failed:", errData);
@@ -46,7 +45,11 @@ export default function Login() {
 
         {/* Username input */}
         <div className="relative w-full">
-          <img src="/user1.png" alt="icon" className="absolute left-3 top-3 w-5 h-5" />
+          <img
+            src="/user1.png"
+            alt="icon"
+            className="absolute left-3 top-3 w-5 h-5"
+          />
           <input
             value={full_name}
             onChange={(e) => setFullName(e.target.value)}
@@ -58,7 +61,11 @@ export default function Login() {
 
         {/* Password input */}
         <div className="relative w-full">
-          <img src="/lock.png" alt="icon" className="absolute left-3 top-3 w-5 h-5" />
+          <img
+            src="/lock.png"
+            alt="icon"
+            className="absolute left-3 top-3 w-5 h-5"
+          />
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -81,7 +88,10 @@ export default function Login() {
         </a>
 
         {/* Message */}
-        <p className="text-white font-semibold">{message}</p>
+        <p className="text-white font-semibold mt-4">
+          {message}
+          {user && ` — Welcome, ${user.full_name}`}
+        </p>
       </form>
     </div>
   );
