@@ -12,7 +12,7 @@ exports.CreateCompany = async (req, res) => {
 
 }
 exports.DeleteCompany = async (req, res) => {
-    const { company_id } = req.body;
+    const { company_id } = req.params.id;
    try {
         const deleted = await company.DeleteCompany(company_id);
         if (deleted) {

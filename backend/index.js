@@ -10,6 +10,16 @@ const PORT = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json());
 
+
+app.post("/api/login", authController.login);
+app.post("/api/register", authController.register);
+app.post("/api/applications", applicationController.createApplication);
+app.get("/api/applications/:id", applicationController.findAllApplicationsbyId);
+app.delete("/api/applications/:id", applicationController.deleteApplication);
+app.put("/api/applications/:id/status", applicationController.updateApplicationStatus);
+app.post("/api/companies", companyController.CreateCompany);
+app.delete("/api/companies/:id", companyController.DeleteCompany);
+
 // Start server
 app.listen(PORT, async () => {
   try {
