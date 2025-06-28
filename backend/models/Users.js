@@ -1,4 +1,3 @@
-const { m } = require('framer-motion');
 const db = require('../config/db'); 
 async function register(userdata){
     const {fullname, email, password} = userdata;

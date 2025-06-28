@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useUser } from "@/components/UserContext";
+import { useUser } from "@/components/UserContext"; // adjust if needed
 import { useRouter } from "next/navigation";
 
 export default function Login() {
@@ -15,21 +15,25 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3001/login", {
+      const response = await fetch("http://localhost:3001/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ full_name, password }),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        setMessage("✅ Login successful");
-        setUser(data.user);
-        router.push("/dashboard");
-      } else {
+     if (response.ok) {
+  const data = await response.json();
+console.log("Login response data:", data);  // Should show your user object
+
+localStorage.setItem("user", JSON.stringify(data));  // Save entire user object as string
+setUser(data);  // Set context user state
+
+  router.push("/dashboard");
+}
+ else {
         const errData = await response.json();
         console.error("Login failed:", errData);
-        setMessage("❌ Login failed");
+        setMessage("❌ Login failed: " + (errData.error || ""));
       }
     } catch (error) {
       console.error("Error logging in:", error);
@@ -47,7 +51,11 @@ export default function Login() {
         <h1 className="text-3xl font-bold text-white">Login</h1>
 
         <div className="relative w-full">
-          <img src="/user1.png" alt="icon" className="absolute left-3 top-3 w-5 h-5" />
+          <img
+            src="/user1.png"
+            alt="icon"
+            className="absolute left-3 top-3 w-5 h-5"
+          />
           <input
             value={full_name}
             onChange={(e) => setFullName(e.target.value)}
@@ -58,7 +66,11 @@ export default function Login() {
         </div>
 
         <div className="relative w-full">
-          <img src="/lock.png" alt="icon" className="absolute left-3 top-3 w-5 h-5" />
+          <img
+            src="/lock.png"
+            alt="icon"
+            className="absolute left-3 top-3 w-5 h-5"
+          />
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -75,7 +87,9 @@ export default function Login() {
           Login
         </button>
 
-        <a href="/register" className="text-white underline">Create new account</a>
+        <a href="/register" className="text-white underline">
+          Create new account
+        </a>
 
         <p className="text-white font-semibold mt-4">
           {message}

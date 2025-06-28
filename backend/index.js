@@ -23,7 +23,7 @@ app.delete("/api/companies/:id", companyController.DeleteCompany);
 // Start server
 app.listen(PORT, async () => {
   try {
-    await connectDB(); // Optional: connect once when starting
+    await connectDB();
     console.log(`Server running on http://localhost:${PORT}`);
   } catch (error) {
     console.error("Failed to connect to DB:", error);
