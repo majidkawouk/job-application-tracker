@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useUser } from "@/components/UserContext"; // adjust path if needed
+import { useUser } from "@/components/UserContext"; 
 import { useRouter } from "next/navigation";
 
 export default function Header() {

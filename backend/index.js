@@ -16,7 +16,7 @@ app.post("/api/register", authController.register);
 app.post("/api/applications", applicationController.createApplication);
 app.get("/api/applications/:id", applicationController.findAllApplicationsbyId);
 app.delete("/api/applications/:id", applicationController.deleteApplication);
-app.put("/api/applications/:id/status", applicationController.updateApplicationStatus);
+app.put("/api/applications/:application_Id/:status", applicationController.updateApplicationStatus);
 app.post("/api/companies", companyController.CreateCompany);
 app.delete("/api/companies/:id", companyController.DeleteCompany);
 

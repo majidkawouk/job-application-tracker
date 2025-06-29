@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useUser } from "@/components/UserContext"; // adjust if needed
+import { useUser } from "@/components/UserContext";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
@@ -23,10 +23,9 @@ export default function Login() {
 
      if (response.ok) {
   const data = await response.json();
-console.log("Login response data:", data);  // Should show your user object
-
-localStorage.setItem("user", JSON.stringify(data));  // Save entire user object as string
-setUser(data);  // Set context user state
+console.log("Login response data:", data); 
+localStorage.setItem("user", JSON.stringify(data)); 
+setUser(data);  
 
   router.push("/dashboard");
 }

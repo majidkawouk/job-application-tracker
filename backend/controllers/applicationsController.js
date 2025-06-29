@@ -36,9 +36,11 @@ exports.deleteApplication = async (req, res) => {
 
 exports.updateApplicationStatus = async (req, res) => {
   try {
-    const { status } = req.body;
-    const { id: applicationId } = req.params;
-    const updated = await application.updateApplicationStatus(applicationId, status);
+    const { status,application_Id } = req.params;
+    if (!status || !application_Id) {
+      return res.status(400).json({ message: 'Status and application ID are required' });
+    }
+    const updated = await application.updateApplicationStatus(application_Id, status);
     if (updated) {
       res.status(200).json({ message: 'Application status updated successfully' });
     } else {
