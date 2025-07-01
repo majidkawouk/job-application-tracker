@@ -17,10 +17,10 @@ export default function Dashboard() {
   };
 
   // Remove an application by ID
-  const handleRemoveApplication = async (applicationId) => {
+  const handleRemoveApplication = async (application_id) => {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/applications/${applicationId}`,
+        `http://localhost:3001/api/applications/${application_id}`,
         {
           method: "DELETE",
         }
@@ -28,7 +28,7 @@ export default function Dashboard() {
 
       if (response.ok) {
         setApplications((prevApps) =>
-          prevApps.filter((app) => app.application_id !== applicationId)
+          prevApps.filter((app) => app.application_id !== application_id)
         );
       } else {
         console.error("❌ Failed to remove application");

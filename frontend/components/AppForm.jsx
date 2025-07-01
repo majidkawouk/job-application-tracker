@@ -40,7 +40,10 @@ export default function AppForm({ onCancel }) {
     const user = localStorage.getItem("user");
     if (!user) return;
     const userObj = JSON.parse(user);
-
+    if (newCompany === "" || companyWebsite === "" || companyLocation === "") {
+      alert("❌ Please fill in all fields");
+      return;
+    }
     const companyData = {
       user_id: userObj.user_id,
       name: newCompany,

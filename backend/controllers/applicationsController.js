@@ -27,8 +27,8 @@ exports.createApplication = async (req, res) => {
 
 exports.deleteApplication = async (req, res) => {
   try {
-    const applicationId = req.params.id;
-    const deleted = await application.deleteApplication(applicationId);
+    const application_id = req.params.id;
+    const deleted = await application.deleteApplication(application_id);
     if (deleted) {
       res.status(200).json({ message: "Application deleted successfully" });
     } else {

@@ -8,12 +8,12 @@ const applications = await db.query(
   return applications;
 }
 async function createApplication(applicationData) {
-  const { userId, companyId , jobtitle ,job_location ,job_url,status,salary_expectation } = applicationData;
-  const result = await db.query('INSERT INTO applications (user_id, company_id, job_title, job_location, job_url, status, salary_expectation) VALUES (?, ?, ?, ?, ?, ?, ?)', [userId, companyId, jobtitle, job_location, job_url, status, salary_expectation]);
+  const { user_id, company_id, job_title, job_location, job_url, status, salary_expectation } = applicationData;
+  const result = await db.query('INSERT INTO applications (user_id, company_id, job_title, job_location, job_url, status, salary_expectation) VALUES (?, ?, ?, ?, ?, ?, ?)', [user_id, company_id, job_title, job_location, job_url, status, salary_expectation]);
   return result.insertId; 
 }
-async function deleteApplication(applicationid) {
-  const result = await db.query('DELETE FROM applications WHERE id = ?', [applicationid]);
+async function deleteApplication(application_id) {
+  const result = await db.query('DELETE FROM applications WHERE application_id= ?', [application_id]);
   return result.affectedRows > 0; 
 }
 async function updateApplicationStatus(application_id, status) {

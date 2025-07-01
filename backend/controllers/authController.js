@@ -14,7 +14,7 @@ exports.login = async (req, res) => {
 exports.register = async (req,res) =>{
 const {full_name,email,password} = req.body;
 try {
-    const user = await auth.register(full_name,email,password);
+    const user = await auth.register({full_name,email,password});
     res.json(user);
 } catch (error) {
     res.status(401).json({ error: error.message });

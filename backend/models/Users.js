@@ -1,7 +1,7 @@
 const db = require('../config/db'); 
 async function register(userdata){
-    const {fullname, email, password} = userdata;
-    const result  = await db.query('INSERT INTO users (fullname, email, password) VALUES (?, ?, ?)', [fullname, email, password]);
+    const {full_name, email, password} = userdata;
+    const result  = await db.query('INSERT INTO users (full_name, email, password) VALUES (?, ?, ?)', [full_name, email, password]);
     return result.insertId;  // return the ID of the newly created user
 }
 async function deleteUser(userId) {
