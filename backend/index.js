@@ -19,7 +19,7 @@ app.delete("/api/applications/:id", applicationController.deleteApplication);
 app.put("/api/applications/:application_Id/:status", applicationController.updateApplicationStatus);
 app.post("/api/companies", companyController.CreateCompany);
 app.delete("/api/companies/:id", companyController.DeleteCompany);
-
+app.get("/api/companies/:user_id", companyController.getallcompaniesByid);
 // Start server
 app.listen(PORT, async () => {
   try {
