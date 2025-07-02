@@ -22,7 +22,7 @@ export default function AppForm({ onCancel, onApplicationAdded }) {
 
       try {
         const response = await fetch(
-          `http://localhost:3001/api/companies/${userObj.user_id}`
+          `https://job-app-7nxq.onrender.com/api/companies/${userObj.user_id}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -56,7 +56,7 @@ export default function AppForm({ onCancel, onApplicationAdded }) {
     };
 
     try {
-      const response = await fetch("http://localhost:3001/api/companies", {
+      const response = await fetch("https://job-app-7nxq.onrender.com/api/companies", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(companyData),
@@ -107,7 +107,7 @@ export default function AppForm({ onCancel, onApplicationAdded }) {
     };
 
     try {
-      const response = await fetch("http://localhost:3001/api/applications", {
+      const response = await fetch("https://job-app-7nxq.onrender.com/api/applications", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

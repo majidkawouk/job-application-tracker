@@ -21,7 +21,7 @@ export default function Dashboard() {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/api/applications/${userObj.user_id}`
+        `https://job-app-7nxq.onrender.com/api/applications/${userObj.user_id}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -48,7 +48,7 @@ export default function Dashboard() {
   const handleRemoveApplication = async (application_id) => {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/applications/${application_id}`,
+        `https://job-app-7nxq.onrender.com/api/applications/${application_id}`,
         { method: "DELETE" }
       );
 
@@ -68,7 +68,7 @@ export default function Dashboard() {
   const handleUpdateApplicationStatus = async (applicationId, status) => {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/applications/${applicationId}/${status}`,
+        `https://job-app-7nxq.onrender.com/api/applications/${applicationId}/${status}`,
         { method: "PUT" }
       );
 
