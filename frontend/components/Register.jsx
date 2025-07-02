@@ -99,7 +99,7 @@ export default function Register() {
           Register
         </button>
 
-        <a href="http://localhost:3000/login" className="text-white underline">
+        <a href="https://job-app-7nxq.onrender.com/login" className="text-white underline">
           Already have an account? Login →
         </a>
 
