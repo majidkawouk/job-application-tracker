@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from "./UserContext";
+import { useUser } from "@/components/UserContext";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AppForm from "./AppForm";
@@ -8,12 +8,40 @@ import AppForm from "./AppForm";
 export default function Dashboard() {
   const { user } = useUser();
   const [applications, setApplications] = useState([]);
-  const router = useRouter();
   const [showAddingForm, setShowAddingForm] = useState(false);
+  const router = useRouter();
 
-  // Open the Add Application form
-  const handleAddApplication = () => {
-    setShowAddingForm(true);
+  const fetchApplications = async () => {
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) {
+      router.push("/login");
+      return;
+    }
+    const userObj = JSON.parse(storedUser);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/applications/${userObj.user_id}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setApplications(data);
+      } else {
+        console.error("❌ Failed to fetch application data");
+      }
+    } catch (error) {
+      console.error("❌ Error fetching applications:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchApplications();
+  }, [router]);
+
+  // Called after a new application is added successfully
+  const handleApplicationAdded = () => {
+    setShowAddingForm(false);
+    fetchApplications(); // Reload applications list
   };
 
   // Remove an application by ID
@@ -21,9 +49,7 @@ export default function Dashboard() {
     try {
       const response = await fetch(
         `http://localhost:3001/api/applications/${application_id}`,
-        {
-          method: "DELETE",
-        }
+        { method: "DELETE" }
       );
 
       if (response.ok) {
@@ -43,15 +69,10 @@ export default function Dashboard() {
     try {
       const response = await fetch(
         `http://localhost:3001/api/applications/${applicationId}/${status}`,
-        {
-          method: "PUT",
-        }
+        { method: "PUT" }
       );
 
       if (response.ok) {
-        const data = await response.json();
-        console.log("✅ Application status updated:", data);
-
         setApplications((prevApps) =>
           prevApps.map((app) =>
             app.application_id === applicationId ? { ...app, status } : app
@@ -66,50 +87,17 @@ export default function Dashboard() {
     }
   };
 
-  // Fetch user's applications on mount
-  useEffect(() => {
-    const fetchApplications = async () => {
-      const storedUser = localStorage.getItem("user");
-
-      if (!storedUser) {
-        router.push("/login");
-        return;
-      }
-
-      const userObj = JSON.parse(storedUser);
-
-      try {
-        const response = await fetch(
-          `http://localhost:3001/api/applications/${userObj.user_id}`
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          setApplications(data);
-        } else {
-          const errorText = await response.text();
-          console.error(
-            "❌ Failed to fetch application data:",
-            response.status,
-            errorText
-          );
-        }
-      } catch (error) {
-        console.error("❌ Error fetching applications:", error);
-      }
-    };
-
-    fetchApplications();
-  }, [router]);
-
   return (
     <>
       {showAddingForm ? (
-        <AppForm onCancel={() => setShowAddingForm(false)} />
+        <AppForm
+          onCancel={() => setShowAddingForm(false)}
+          onApplicationAdded={handleApplicationAdded}
+        />
       ) : (
         <div className="min-h-screen bg-gray-100 p-6">
           <button
-            onClick={handleAddApplication}
+            onClick={() => setShowAddingForm(true)}
             className="text-3xl font-bold mb-6 bg-green-500 p-3 rounded-lg text-gray-800"
           >
             Add Application
@@ -132,7 +120,7 @@ export default function Dashboard() {
                     alt=""
                   />
                   <h2 className="text-xl font-bold mb-2">
-                    Application #{app.application_id}
+                    Application card
                   </h2>
                   <hr className="bg-black p-1" />
                   <p>

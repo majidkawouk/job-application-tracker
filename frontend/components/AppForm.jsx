@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-export default function AppForm({ onCancel }) {
+export default function AppForm({ onCancel, onApplicationAdded }) {
   const [companyId, setCompanyId] = useState("");
   const [newCompany, setNewCompany] = useState("");
   const [companyWebsite, setCompanyWebsite] = useState("");
@@ -21,7 +21,9 @@ export default function AppForm({ onCancel }) {
       const userObj = JSON.parse(user);
 
       try {
-        const response = await fetch(`http://localhost:3001/api/companies/${userObj.user_id}`);
+        const response = await fetch(
+          `http://localhost:3001/api/companies/${userObj.user_id}`
+        );
         if (response.ok) {
           const data = await response.json();
           setCompanies(data);
@@ -40,10 +42,12 @@ export default function AppForm({ onCancel }) {
     const user = localStorage.getItem("user");
     if (!user) return;
     const userObj = JSON.parse(user);
+
     if (newCompany === "" || companyWebsite === "" || companyLocation === "") {
       alert("❌ Please fill in all fields");
       return;
     }
+
     const companyData = {
       user_id: userObj.user_id,
       name: newCompany,
@@ -111,7 +115,7 @@ export default function AppForm({ onCancel }) {
 
       if (response.ok) {
         alert("✅ Application added");
-        onCancel();
+        onApplicationAdded(); // reload dashboard & close form
       } else {
         const errorText = await response.text();
         alert("❌ Failed to add application: " + errorText);
@@ -184,6 +188,7 @@ export default function AppForm({ onCancel }) {
       <button
         onClick={handleAddCompany}
         className="bg-green-500 text-white px-4 py-2 rounded-md mb-4"
+        type="button"
       >
         Add Company
       </button>

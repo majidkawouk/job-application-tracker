@@ -22,13 +22,11 @@ export default function Main() {
       </ul>
 
       <div className="flex flex-col items-center gap-4 mt-10 text-white">
-        <button className="bg-black z-20 hover:bg-gray-900 transition rounded-md px-6 py-3 text-xl font-semibold shadow">
-          + Start Tracking Jobs
-        </button>
-        <span className="text-3xl font-normal text-gray-100">OR</span>
+    
+  
         <button
           onClick={handledash}
-          className="bg-black hover:bg-gray-900 transition rounded-md px-6 py-3 text-xl font-semibold shadow"
+          className="bg-black hover:bg-gray-900 transition rounded-md px-6 py-3 text-xl  z-30 font-semibold shadow"
         >
           View Your Dashboard
         </button>

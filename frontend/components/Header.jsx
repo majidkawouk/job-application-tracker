@@ -15,8 +15,8 @@ export default function Header() {
   };
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 bg-[#1E1E1E] shadow-md text-white">
-      <div className="flex items-center space-x-3 cursor-pointer">
+    <header className="relative flex items-center justify-between px-6 py-4 bg-[#1E1E1E] shadow-md text-white overflow-hidden">
+      <div className="flex items-center space-x-3 cursor-pointer z-10">
         <Link href="/">
           <img src="/path.png" alt="logo" className="w-14 h-12" />
         </Link>
@@ -25,10 +25,9 @@ export default function Header() {
         </h1>
       </div>
 
-      <div className="flex text-lg font-semibold text-black">
+      <div className="flex text-lg font-semibold text-black z-10">
         {user ? (
           <>
-           
             <button
               onClick={handleLogout}
               className="mx-2 bg-orange-500 rounded-md px-4 py-2 hover:bg-orange-600 transition"
@@ -51,6 +50,8 @@ export default function Header() {
           </>
         )}
       </div>
+
+      
     </header>
   );
 }
