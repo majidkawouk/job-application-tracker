@@ -8,6 +8,9 @@ app.use(cors());
 app.use(express.json());
 
 // Use modular routes
+app.get("/", (req, res) => {
+  res.send("Backend is running!");
+});
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/applications", require("./routes/applications"));
 app.use("/api/companies", require("./routes/companies"));
