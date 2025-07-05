@@ -18,8 +18,8 @@
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **Next.js** (App Router)
-- **React** (`useState`, `useEffect`)
+- **Next.js** 
+
 - **Tailwind CSS**
 - **localStorage** for session
 
