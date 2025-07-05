@@ -1,7 +1,7 @@
 # 🧭 Job Application Tracer
 
 **Job Application Tracer** is a full-stack web app that lets users manage and track their job applications. Users can register, log in, add companies, submit job applications, and track their status — all in a clean dashboard.
-
+🌐 **Live App:** [https://job-app-eight-pi.vercel.app](https://job-app-eight-pi.vercel.app)
 ---
 
 ## 🚀 Features
