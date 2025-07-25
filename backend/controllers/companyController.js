@@ -1,4 +1,4 @@
-const company = require('../models/Companies'); // Adjust the path as necessary
+const company = require('../models/Companies'); 
 
 exports.CreateCompany = async (req, res) => {
   const { user_id, name, website, headquarters_location } = req.body;
