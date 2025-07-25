@@ -1,4 +1,4 @@
-const auth = require('../models/Users'); // adjust path to where your Users.js is located
+const auth = require('../models/Users'); 
 
 exports.login = async (req, res) => {
     const { full_name, password } = req.body;
